@@ -2,7 +2,18 @@ var Asset = require('../lib/asset').Asset;
 var should = require('should');
 var date_util = require('../util/date_util');
 
-describe('asset calucaltor', function(){	
+describe('asset calucaltor', function(){
+	//it('verify spec time', function(done){
+	//	var asset = new Asset('');
+	//	var assetObj = {
+	//		"rate":0.08,
+	//		"num":10000,
+	//		"start_time" : 1437667200000,
+   //         "end_time" : 1438272000000
+	//	};
+	//	asset.
+  //
+	//});
 	// it('verify array without time', function(done){	
 	// 	var asset = new Asset('');
 
@@ -42,8 +53,9 @@ describe('asset calucaltor', function(){
 		// 	console.log('on listener' , err);
 		// });
 
-		var result = asset.calArray([1,2])		
-		
+		var result = asset.calArray([1,2]);
+		console.log('## result', result);
+
 		// var listener = asset.emit('custom_event', 'time not set in emit');
 		// console.log("listener:",listener);
 		// result.should.be.equal(0.08*1000/365);
