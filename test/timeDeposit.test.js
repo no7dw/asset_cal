@@ -47,7 +47,7 @@ describe('timeDesposit calucaltor', function() {
     assetValue.should.be.equal(0);
     done();
   });
-  it('verify at block time', function(done){
+  it('verify at block time then withdraw', function(done){
     asset.withdrawAhead = true;
     var todayZeroTime = new Date('2015/7/27').getTime();
     var timeDeposit = new TimeDeposit();
@@ -56,7 +56,7 @@ describe('timeDesposit calucaltor', function() {
     assetValue.should.be.equal(asset.discountRate*asset.amount/365*periodDay);
     done();
   });
-  it('verify after block time before end time', function(done){
+  it('verify after block time before end time  then withdraw', function(done){
     asset.withdrawAhead = true;
     var todayZeroTime = new Date('2015/7/30').getTime();
     var timeDeposit = new TimeDeposit();
@@ -65,7 +65,7 @@ describe('timeDesposit calucaltor', function() {
     assetValue.should.be.equal(asset.discountRate*asset.amount/365*periodDay);
     done();
   });
-  it('verify after block time before end time', function(done){
+  it('verify after block time before end time  ,no withdraw', function(done){
     asset.withdrawAhead = false;
     var todayZeroTime = new Date('2015/7/30').getTime();
     var timeDeposit = new TimeDeposit();
