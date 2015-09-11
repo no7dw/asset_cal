@@ -15,6 +15,7 @@ var ms = require('ms');
 //  amount:100000,
 //  rate:0.9,
 //  discountRate: 0.3,
+//  withdrawAhead:true//封闭期后提前取出
 //
 //}
 describe('timeDesposit calucaltor', function() {
@@ -28,7 +29,7 @@ describe('timeDesposit calucaltor', function() {
     discountRate:0.3
   };
 
-  it('verify  with right time', function(done){
+  it('verify  at right end time', function(done){
 
     var todayZeroTime = new Date('2015/8/11').getTime();
     var timeDeposit = new TimeDeposit();
@@ -37,7 +38,7 @@ describe('timeDesposit calucaltor', function() {
     assetValue.should.be.equal(asset.rate*asset.amount/365*periodDay);
     done();
   });
-  it('verify  with before block time', function(done){
+  it('verify before block time', function(done){
 
     var todayZeroTime = new Date('2015/7/26').getTime();
     var timeDeposit = new TimeDeposit();
@@ -46,13 +47,31 @@ describe('timeDesposit calucaltor', function() {
     assetValue.should.be.equal(0);
     done();
   });
-  it('verify  with at block time', function(done){
-
+  it('verify at block time', function(done){
+    asset.withdrawAhead = true;
     var todayZeroTime = new Date('2015/7/27').getTime();
     var timeDeposit = new TimeDeposit();
     var assetValue = timeDeposit.cal(asset, todayZeroTime);
     var periodDay =  (todayZeroTime- asset.start_time)/ms('1d');
     assetValue.should.be.equal(asset.discountRate*asset.amount/365*periodDay);
+    done();
+  });
+  it('verify after block time before end time', function(done){
+    asset.withdrawAhead = true;
+    var todayZeroTime = new Date('2015/7/30').getTime();
+    var timeDeposit = new TimeDeposit();
+    var assetValue = timeDeposit.cal(asset, todayZeroTime);
+    var periodDay =  (todayZeroTime- asset.start_time)/ms('1d');
+    assetValue.should.be.equal(asset.discountRate*asset.amount/365*periodDay);
+    done();
+  });
+  it('verify after block time before end time', function(done){
+    asset.withdrawAhead = false;
+    var todayZeroTime = new Date('2015/7/30').getTime();
+    var timeDeposit = new TimeDeposit();
+    var assetValue = timeDeposit.cal(asset, todayZeroTime);
+    var periodDay =  (todayZeroTime- asset.start_time)/ms('1d');
+    assetValue.should.be.equal(0);
     done();
   });
 })
