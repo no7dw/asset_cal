@@ -26,7 +26,7 @@ describe('timeDesposit calucaltor', function() {
     end_time:new Date('2015/8/11').getTime(),//1439222400000,
     blockPeriod:15,
     rate:0.1,
-    discountRate:0.3
+    discountRate:0.03
   };
 
   it('verify  at right end time', function(done){
