@@ -74,4 +74,25 @@ describe('timeDesposit calucaltor', function() {
     assetValue.should.be.equal(0);
     done();
   });
+  it('verify object type of start time', function(done){
+    var asset = { amount: 150,
+      num: 150,
+      product_id: '55c31e936f227ed922c508aa',
+      asset_id: '56165b658b358add3930cc12',
+      start_time: 'Fri Oct 09 2015 20:02:45 GMT+0800 (CST)',
+      end_time: 'Thu Jan 07 2016 00:00:00 GMT+0800 (CST)',
+      rebuy: 0,
+      expect_earning: 0,
+      objId: '56165b658b358add3930cc12',
+      type: 2,
+      portfolio_id: '55c31e936f227ed922c508aa',
+      rate:0.08
+    };
+    var todayZeroTime = new Date('2016/01/07').getTime();
+    var timeDeposit = new TimeDeposit();
+    var assetValue = timeDeposit.cal(asset, todayZeroTime);
+    var periodDay =  (todayZeroTime- asset.start_time)/ms('1d');
+    assetValue.should.be.above(0);
+    done();
+  });
 })

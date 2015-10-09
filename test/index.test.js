@@ -8,7 +8,7 @@ var asset_cal = new Asset();
 var TimeDeposit = require('../index').timeDeposit
 var timeDeposit_cal = new TimeDeposit();
 var ms = require('ms');
-
+var date_util = require('../util/date_util');
 var getDate = function (currentTime, day) {
     if (currentTime == undefined)
       currentTime = new Date();
@@ -32,18 +32,18 @@ var constructAsset = function(portfolioInfo, asset ) {
     asset.rate = asset.rate|| portfolioInfo.rate_year;
     return asset;
   };
-  var constructTimeDeposit = function(portfolioInfo, asset) {
-    if(asset.portfolio_id == portfolioInfo.id){
-      console.log('\n\n\n@@@@  timeDeposit_cal ', portfolioInfo , asset);
-      asset.rate = asset.rate|| portfolioInfo.rate_year || portfolioInfo.rate;
-      asset.end_time = portfolioInfo.end_time;
-      asset.rate = portfolioInfo.rate;
-      asset.discountRate = portfolioInfo.discountRate;
-      asset.end_time = asset.start_time + ms(portfolioInfo.term.toString()+'d');
-      return asset;
-    }
-    return {};
-  };
+var constructTimeDeposit = function (portfolioInfo, asset) {
+
+  if (asset.portfolio_id == portfolioInfo.id) {
+    asset.rate = asset.rate || portfolioInfo.rate_year || portfolioInfo.rate;
+    asset.start_time = date_util.formatTimeToZeroTime(asset.start_time);
+    asset.end_time = asset.start_time + ms(portfolioInfo.term.toString() + 'd');
+    asset.discountRate = portfolioInfo.discountRate || 0.01;
+    console.log('\n\n\n@@@@  timeDeposit_cal ', portfolioInfo, asset);
+    return asset;
+  }
+  return {};
+};
 var calculateSingleUserAsset = function (portfolioInfo, asset) {
     var principalAsset;
     var earning = 0;
