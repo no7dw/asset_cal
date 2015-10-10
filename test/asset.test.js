@@ -33,7 +33,7 @@ describe('asset calucaltor', function(){
 		result.should.be.equal(0.3287671232876712);
 		done();
 	});
-	it('verify array with time', function(done){	
+	it('verify array with time', function(done){
 		var asset = new Asset('');
 		var isSetZeroTime = true;
 		var arr = [{
