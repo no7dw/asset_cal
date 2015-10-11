@@ -10,6 +10,6 @@ usage:
     var assetobj = {
         "amount":1000,
         "rate":0.08,
-        "portfolio_id": Const.PRODUCT.KOALAID
+        "portfolio_id": "549922452238c54e98b750bc"
     }
     var earningValue = af.cal(assetobj);
