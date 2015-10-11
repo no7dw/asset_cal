@@ -3,7 +3,11 @@
  */
 var AssetFactory = require('../lib/assetFactory');
 var af = new AssetFactory();
+
 var should = require('should');
+var ms = require('ms');
+
+var date_util = require('../util/date_util');
 
 describe('asset factory calucaltor', function() {
 
@@ -13,26 +17,34 @@ describe('asset factory calucaltor', function() {
       "TIME3MID": "55c31e936f227ed922c508aa"
     }
   };
-  var assetobj = {
+  var demandDepositObj = {
     "rate": 0.08,
     "id": 0,
     "amount": 1000,
     "num": 1000,
     "portfolio_id": Const.PRODUCT.KOALAID,
-    "type": "demandDeposit"
+    "assetType": "demandDeposit"
   };
-  it('with normal obj', function (done) {
-    //usage:
-    //var af = require('./lib/assetFactory')
-    //var b = new af({rate:0.01})
-    //or
-
-    //var c = b._createAsset({assetType:"demandDeposit"});
-    //c.cal(asset);
-
-    //or just like this:
-    var earningValue = af.cal(assetobj);
-    earningValue.should.be.equal(assetobj.amount*assetobj.rate/365);
+  var timeDepositObj = {
+    "id": 0,
+    "amount": 1000,
+    "num": 1000,
+    start_time: date_util.getDate() - ms('90d'),//1436630400000
+    end_time: date_util.getDate(),//1439222400000,
+    blockPeriod:15,
+    rate:0.1,
+    discountRate:0.03,
+    "portfolio_id": Const.PRODUCT.TIME3MID,
+    "assetType": "timeDeposit"
+  };
+  it('with normal demandDeposit obj', function (done) {
+    var earningValue = af.cal(demandDepositObj);
+    earningValue.should.be.equal(demandDepositObj.amount*demandDepositObj.rate/365);
+    done();
+  });
+  it('with normal timeDeposit obj', function (done) {
+    var earningValue = af.cal(timeDepositObj);
+    earningValue.should.be.equal(timeDepositObj.amount*timeDepositObj.rate/365*90);
     done();
   });
   it('with cal 0 ', function (done) {

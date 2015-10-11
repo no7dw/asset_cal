@@ -5,23 +5,9 @@ var should = require('should');
 
 var AssetFactory = require('../lib/assetFactory');
 var af = new AssetFactory();
-
+var date_util = require('../util/date_util');
 
 var Const = require('../data/const');
-
-var getDate = function (currentTime, day) {
-    if (currentTime == undefined)
-      currentTime = new Date();
-    var today = new Date();
-    if (day != undefined) {
-      today.setFullYear(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate() + day);
-    } else {
-      today.setFullYear(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate());
-    }
-    today.setHours(0, 0, 0, 0);
-    return today.getTime();
-  };
-
 
 var calculateSingleUserAsset = function (portfolioInfo, asset) {
     var principalAsset = af.assemble(portfolioInfo, asset);
@@ -73,7 +59,7 @@ var portfolioMul = [
       "id":1,
       "amount": 1000,
       "num": 1000,
-      "start_time": getDate(new Date(), -90),
+      "start_time": date_util.getDate(new Date(), -90),
       "portfolio_id": Const.PRODUCT.TIME3MID //55c31e936f227ed922c508aa timeDeposit.id
     }
   ]
