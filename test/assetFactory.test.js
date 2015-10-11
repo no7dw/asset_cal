@@ -2,6 +2,7 @@
  * Created by dengwei on 11/10/15.
  */
 var AssetFactory = require('../lib/assetFactory');
+var af = new AssetFactory();
 var should = require('should');
 
 describe('asset factory calucaltor', function() {
@@ -20,7 +21,7 @@ describe('asset factory calucaltor', function() {
     "portfolio_id": Const.PRODUCT.KOALAID,
     "type": "demandDeposit"
   };
-  it('verify spec time 0 KOALAID', function (done) {
+  it('with normal obj', function (done) {
     //usage:
     //var af = require('./lib/assetFactory')
     //var b = new af({rate:0.01})
@@ -30,9 +31,13 @@ describe('asset factory calucaltor', function() {
     //c.cal(asset);
 
     //or just like this:
-    var af = new AssetFactory();
     var earningValue = af.cal(assetobj);
     earningValue.should.be.equal(assetobj.amount*assetobj.rate/365);
+    done();
+  });
+  it('with cal 0 ', function (done) {
+    var earningValue = af.cal(0);
+    earningValue.should.be.equal(0);
     done();
   });
 });

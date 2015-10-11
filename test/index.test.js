@@ -7,8 +7,13 @@ var Asset = require('../index').asset
 var asset_cal = new Asset();
 var TimeDeposit = require('../index').timeDeposit
 var timeDeposit_cal = new TimeDeposit();
+
+var AssetFactory = require('../lib/assetFactory');
+var af = new AssetFactory();
+
 var ms = require('ms');
 var date_util = require('../util/date_util');
+
 var getDate = function (currentTime, day) {
     if (currentTime == undefined)
       currentTime = new Date();
@@ -28,7 +33,6 @@ var Const = {
 	}
 };
 var constructAsset = function(portfolioInfo, asset ) {
-    //bug ToDo: mul-product not just [0], and here didn't according to time
     asset.rate = asset.rate|| portfolioInfo.rate_year || portfolioInfo.rate;
     return asset;
   };
@@ -44,29 +48,24 @@ var constructTimeDeposit = function (portfolioInfo, asset) {
   }
   return {};
 };
+
+var assemble = function (portfolioInfo, asset) {
+  var compareID = (portfolioInfo.portfolio_id|| portfolioInfo.id ).toString();
+  if(asset.portfolio_id && asset.portfolio_id != Const.PRODUCT.KOALAID){
+    return constructTimeDeposit(portfolioInfo, asset);
+  }else if(asset.portfolio_id == Const.PRODUCT.KOALAID && compareID == Const.PRODUCT.KOALAID ){
+    return constructAsset(portfolioInfo, asset);
+  }
+  else{
+    console.log('*** none match');
+    return {};
+  }
+};
 var calculateSingleUserAsset = function (portfolioInfo, asset) {
-    var principalAsset;
-    var earning = 0;
-    var compareID = (portfolioInfo.portfolio_id|| portfolioInfo.id ).toString();
-    // console.log('compareID ?= Const.PRODUCT.KOALAID', compareID == Const.PRODUCT.KOALAID);
-    if(asset.portfolio_id && asset.portfolio_id != Const.PRODUCT.KOALAID){
-      principalAsset = constructTimeDeposit(portfolioInfo, asset);
-      earning = timeDeposit_cal.cal(principalAsset);
-      console.log('********** timeDeposit_cal earning',earning,  JSON.stringify(principalAsset),  JSON.stringify(portfolioInfo)  );
-      return earning;
-    }
-    else if(asset.portfolio_id == Const.PRODUCT.KOALAID && compareID == Const.PRODUCT.KOALAID ){
-      principalAsset = constructAsset(portfolioInfo, asset);
-      earning = asset_cal.cal(principalAsset)
-      console.log('********** DemandDepositAssetCal.cal  result：%s  asset： %s  portfolio_id %s',earning,   JSON.stringify(asset), JSON.stringify(portfolioInfo) );
-      return earning;      
-    }
-    else{
-    	console.log('*** none match');
-    	// console.log('*** none match', portfolioInfo , asset, compareID);
-    	return 0;
-    } 
-  };
+    var principalAsset = assemble(portfolioInfo, asset);
+    return af.cal(principalAsset);
+}
+
 
 var funds = [ { quota: 10000,
     name: '三月定期',
@@ -118,7 +117,7 @@ var portfolioMul = [
   ]
 
 describe('asset calucaltor', function(){
-	it('verify spec time 0 KOALAID', function(done){
+	it('verify 错误的portfolio asset pair', function(done){
 		var earning = calculateSingleUserAsset(funds[0], portfolioKoala[0]);
 		console.log("earning", earning);
 		earning.should.be.equal(0);
