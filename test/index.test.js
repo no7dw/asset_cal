@@ -29,7 +29,7 @@ var Const = {
 };
 var constructAsset = function(portfolioInfo, asset ) {
     //bug ToDo: mul-product not just [0], and here didn't according to time
-    asset.rate = asset.rate|| portfolioInfo.rate_year;
+    asset.rate = asset.rate|| portfolioInfo.rate_year || portfolioInfo.rate;
     return asset;
   };
 var constructTimeDeposit = function (portfolioInfo, asset) {
@@ -94,14 +94,14 @@ var funds = [ { quota: 10000,
     updatedAt: '2015-09-18T12:52:00.715Z',
     id: '55fc08f09c2512f2db4c70f4' } ];
 
-var pokoala =  [
+var portfolioKoala =  [
     {
       "amount": 1300,
       "num": 1300,
       "portfolio_id": Const.PRODUCT.KOALAID
     }
   ];
-var poMul = [
+var portfolioMul = [
     {
       "id":0,
       "amount": 0,
@@ -119,25 +119,25 @@ var poMul = [
 
 describe('asset calucaltor', function(){
 	it('verify spec time 0 KOALAID', function(done){
-		var earning = calculateSingleUserAsset(funds[0], pokoala[0]);
+		var earning = calculateSingleUserAsset(funds[0], portfolioKoala[0]);
 		console.log("earning", earning);
 		earning.should.be.equal(0);
 		done();
 	})
 	it('verify spec time 1 TIME3MID', function(done){
-		var earning = calculateSingleUserAsset(funds[1], pokoala[0]);
+		var earning = calculateSingleUserAsset(funds[1], portfolioKoala[0]);
 		console.log("earning", earning);
 		earning.should.be.above(0);
 		done();
 	})
 	it('verify spec time 1 TIME3MID with mul', function(done){
-		var earning = calculateSingleUserAsset(funds[0], poMul[1]);
+		var earning = calculateSingleUserAsset(funds[0], portfolioMul[1]);
 		console.log("earning", earning);
 		earning.should.be.above(0);
 		done();
 	})
 	it('verify spec time 0 KOALAID with mul', function(done){
-		var earning = calculateSingleUserAsset(funds[1], poMul[0]);
+		var earning = calculateSingleUserAsset(funds[1], portfolioMul[0]);
 		console.log("earning", earning);
 		earning.should.be.equal(0);
 		done();
