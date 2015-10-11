@@ -3,16 +3,11 @@
  */
 var should = require('should');
 
-var Asset = require('../index').asset
-var asset_cal = new Asset();
-var TimeDeposit = require('../index').timeDeposit
-var timeDeposit_cal = new TimeDeposit();
-
 var AssetFactory = require('../lib/assetFactory');
 var af = new AssetFactory();
 
-var ms = require('ms');
-var date_util = require('../util/date_util');
+
+var Const = require('../data/const');
 
 var getDate = function (currentTime, day) {
     if (currentTime == undefined)
@@ -26,43 +21,10 @@ var getDate = function (currentTime, day) {
     today.setHours(0, 0, 0, 0);
     return today.getTime();
   };
-var Const = {
-	"PRODUCT" :{
-		"KOALAID":"549922452238c54e98b750bc",
-		"TIME3MID":"55c31e936f227ed922c508aa"
-	}
-};
-var constructAsset = function(portfolioInfo, asset ) {
-    asset.rate = asset.rate|| portfolioInfo.rate_year || portfolioInfo.rate;
-    return asset;
-  };
-var constructTimeDeposit = function (portfolioInfo, asset) {
 
-  if (asset.portfolio_id == portfolioInfo.id) {
-    asset.rate = asset.rate || portfolioInfo.rate_year || portfolioInfo.rate;
-    asset.start_time = date_util.formatTimeToZeroTime(asset.start_time);
-    asset.end_time = asset.start_time + ms(portfolioInfo.term.toString() + 'd');
-    asset.discountRate = portfolioInfo.discountRate || 0.01;
-    console.log('\n\n\n@@@@  timeDeposit_cal ', portfolioInfo, asset);
-    return asset;
-  }
-  return {};
-};
 
-var assemble = function (portfolioInfo, asset) {
-  var compareID = (portfolioInfo.portfolio_id|| portfolioInfo.id ).toString();
-  if(asset.portfolio_id && asset.portfolio_id != Const.PRODUCT.KOALAID){
-    return constructTimeDeposit(portfolioInfo, asset);
-  }else if(asset.portfolio_id == Const.PRODUCT.KOALAID && compareID == Const.PRODUCT.KOALAID ){
-    return constructAsset(portfolioInfo, asset);
-  }
-  else{
-    console.log('*** none match');
-    return {};
-  }
-};
 var calculateSingleUserAsset = function (portfolioInfo, asset) {
-    var principalAsset = assemble(portfolioInfo, asset);
+    var principalAsset = af.assemble(portfolioInfo, asset);
     return af.cal(principalAsset);
 }
 
