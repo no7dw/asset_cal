@@ -2,7 +2,7 @@
 
 https://github.com/no7dw/asset_cal
 
-## usage:
+usage:
 
     var AssetFactory = require('asset_cal').assetFactory;
     var af = new AssetFactory();
