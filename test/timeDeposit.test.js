@@ -29,6 +29,7 @@ describe('timeDesposit calucaltor', function() {
     discountRate:0.03
   };
 
+
   it('verify  at right end time', function(done){
 
     var todayZeroTime = new Date('2015/8/11').getTime();
@@ -38,6 +39,16 @@ describe('timeDesposit calucaltor', function() {
     assetValue.should.be.equal(asset.rate*asset.amount/365*periodDay);
     done();
   });
+  it('verify after right end time', function(done){
+
+    var todayZeroTime = new Date('2015/8/11').getTime() + ms('1d');
+    var timeDeposit = new TimeDeposit();
+    var assetValue = timeDeposit.cal(asset, todayZeroTime);
+    var periodDay =  (asset.end_time - asset.start_time)/ms('1d');
+    assetValue.should.be.equal(0);
+    done();
+  });
+
   it('verify before block time', function(done){
 
     var todayZeroTime = new Date('2015/7/26').getTime();
@@ -47,33 +58,34 @@ describe('timeDesposit calucaltor', function() {
     assetValue.should.be.equal(0);
     done();
   });
-  it('verify at block time then withdraw', function(done){
-    asset.withdrawAhead = true;
-    var todayZeroTime = new Date('2015/7/27').getTime();
-    var timeDeposit = new TimeDeposit();
-    var assetValue = timeDeposit.cal(asset, todayZeroTime);
-    var periodDay =  (todayZeroTime- asset.start_time)/ms('1d');
-    assetValue.should.be.equal(asset.discountRate*asset.amount/365*periodDay);
-    done();
-  });
-  it('verify after block time before end time  then withdraw', function(done){
-    asset.withdrawAhead = true;
-    var todayZeroTime = new Date('2015/7/30').getTime();
-    var timeDeposit = new TimeDeposit();
-    var assetValue = timeDeposit.cal(asset, todayZeroTime);
-    var periodDay =  (todayZeroTime- asset.start_time)/ms('1d');
-    assetValue.should.be.equal(asset.discountRate*asset.amount/365*periodDay);
-    done();
-  });
-  it('verify after block time before end time  ,no withdraw', function(done){
-    asset.withdrawAhead = false;
-    var todayZeroTime = new Date('2015/7/30').getTime();
-    var timeDeposit = new TimeDeposit();
-    var assetValue = timeDeposit.cal(asset, todayZeroTime);
-    var periodDay =  (todayZeroTime- asset.start_time)/ms('1d');
-    assetValue.should.be.equal(0);
-    done();
-  });
+  //no need now
+  //it.skip('verify at block time then withdraw', function(done){
+  //  asset.withdrawAhead = true;
+  //  var todayZeroTime = new Date('2015/7/27').getTime();
+  //  var timeDeposit = new TimeDeposit();
+  //  var assetValue = timeDeposit.cal(asset, todayZeroTime);
+  //  var periodDay =  (todayZeroTime- asset.start_time)/ms('1d');
+  //  assetValue.should.be.equal(asset.discountRate*asset.amount/365*periodDay);
+  //  done();
+  //});
+  //it.skip('verify after block time before end time  then withdraw', function(done){
+  //  asset.withdrawAhead = true;
+  //  var todayZeroTime = new Date('2015/7/30').getTime();
+  //  var timeDeposit = new TimeDeposit();
+  //  var assetValue = timeDeposit.cal(asset, todayZeroTime);
+  //  var periodDay =  (todayZeroTime- asset.start_time)/ms('1d');
+  //  assetValue.should.be.equal(asset.discountRate*asset.amount/365*periodDay);
+  //  done();
+  //});
+  //it.skip('verify after block time before end time  ,no withdraw', function(done){
+  //  asset.withdrawAhead = false;
+  //  var todayZeroTime = new Date('2015/7/30').getTime();
+  //  var timeDeposit = new TimeDeposit();
+  //  var assetValue = timeDeposit.cal(asset, todayZeroTime);
+  //  var periodDay =  (todayZeroTime- asset.start_time)/ms('1d');
+  //  assetValue.should.be.equal(0);
+  //  done();
+  //});
   it('verify object type of start time', function(done){
     var asset = { amount: 150,
       num: 150,

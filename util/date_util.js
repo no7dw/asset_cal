@@ -26,6 +26,19 @@ module.exports = {
     return moment(time).format(format);
   },
   /**
+   * 计算两个日期相差的天数
+   * @param start_time
+   * @param end_time  默认是当前时间
+   * @param type  默认是 天
+   * @returns {*}
+   */
+  diff: function (start_time, end_time, type) {
+    var start = moment(start_time);
+    var end = moment(end_time || new Date());
+    var day = end.diff(start, type||'days');
+    return day;
+  },
+  /**
    *
    * @param currentTime 时间
    * @returns {number}返回的是输入时间零点的时间戳
