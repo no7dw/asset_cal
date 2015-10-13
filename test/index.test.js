@@ -99,19 +99,19 @@ var assembleObjId = function (asset, type) {
   asset.assetType = "demandDeposit";
   if (type == 'asset') {
     asset.objId = asset.asset_id || asset.portfolio_id;
-    asset.type = 2;
+    asset.type = 2;//Const.CASHFLOW_TYPE.RETURN
     if(asset.product_id && asset.product_id != Const.PRODUCT.KOALAID )
       asset.assetType = "timeDeposit";
   }
   else if (type == 'bonus') {
     asset.product_id = Const.PRODUCT.KOALAID;
     asset.objId = asset.invitee_id ? asset.ticket_id + '_' + asset.invitee_id : asset.ticket_id;
-    if (asset.bonus_type == 'ex_money') {
-      asset.type = 4;
-    } else if (asset.bonus_type == 'cash') {
-      asset.type = 3;
+    if (asset.bonus_type == 'ex_money') {//TicketBonus.TYPE_EX_MONEY
+      asset.type = 4;//Const.CASHFLOW_TYPE.EXPERIENCE_RETURN
+    } else if (asset.bonus_type == 'cash') {//TicketBonus.TYPE_CASH
+      asset.type = 3;//Const.CASHFLOW_TYPE.BONUS
     } else {
-      asset.type = 4;
+      asset.type = 4;//Const.CASHFLOW_TYPE.EXPERIENCE_RETURN
     }
   }
   asset.portfolio_id = asset.product_id || asset.portfolio_id;
