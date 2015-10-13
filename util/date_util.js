@@ -44,8 +44,13 @@ module.exports = {
    * @returns {number}返回的是输入时间零点的时间戳
    */
   formatTimeToZeroTime : function (time) {
-    if('object' == (typeof time))
+    if('object' == (typeof time)){
       time = time + '';
+      time = new Date(time);
+    }
+    else if('string' == (typeof time)){
+      time = new Date(time);
+    }
     time = this.formatTime(time,  'YYYY/MM/DD');
     time = new Date(time).getTime();
     return time;
