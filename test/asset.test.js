@@ -33,7 +33,7 @@ describe('asset calucaltor', function(){
 		result.should.be.equal(0.3287671232876712);
 		done();
 	});
-	it('verify array with time', function(done){
+	it('verify array with time of demandDeposit', function(done){
 		var asset = new Asset('');
 		var isSetZeroTime = true;
 		var arr = [{
@@ -52,16 +52,37 @@ describe('asset calucaltor', function(){
 		asset.on('custom_event',  function(result){
 			console.log('event result', result);
 		})
-		// var listener = asset.on('custom_event', function(err){
-		// 	console.log('on listener' , err);
-		// });
-		// var listener = asset.emit('custom_event', 'time not set in emit');
-		// console.log("listener:",listener);
 
+		var result = asset.calArray(arr);
+		console.log('## result', result);
+		result.should.be.equal(arr[1].rate*arr[1].num/365 + arr[0].rate*arr[0].num/365);
+		done();
+		
+	});
+	it('verify array with time of ex_money', function(done){
+		var asset = new Asset('');
+		var isSetZeroTime = true;
+		var arr = [{
+			rate : 0.08,
+			num : 1000,
+			type:4,//ex_money
+			start_time:new Date('2015-06-09').getTime(),
+			end_time:new Date('2015-06-16').getTime()//out of date
+		},{
+			rate : 0.08,
+			num : 500,
+			type:4,//ex_money
+			start_time:date_util.getDate(null, -3, isSetZeroTime),
+			end_time:date_util.getDate(null, +10, isSetZeroTime)
+		}
+		];
+		asset.on('custom_event',  function(result){
+			console.log('event result', result);
+		})
 		var result = asset.calArray(arr);
 		console.log('## result', result);
 		result.should.be.equal(arr[1].rate*arr[1].num/365);
 		done();
-		
+
 	});
 });
