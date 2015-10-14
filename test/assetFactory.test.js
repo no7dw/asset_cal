@@ -52,4 +52,37 @@ describe('asset factory calucaltor', function() {
     earningValue.should.be.equal(0);
     done();
   });
+  it('定期预期收益', function(done){
+    var portfolioInfo = { _id: "55c31e936f227ed922c508aa",
+      quota: 80000,
+      name: '三月定期',
+      term: 3,
+      blockPeriod : 2,
+      type: 1,
+      isRecommend: true,
+      rate: 0.09,
+      discountRate: 0.03,
+      product_id: "55c31e936f227ed922c508aa",
+      id: '55c31e936f227ed922c508aa' };
+    var asset =  { amount: 100,
+      num: 100,
+      product_id: '55c31e936f227ed922c508aa',
+      asset_id: '561ca71fea874bf61a7e8350',
+      start_time: 1444665600000,
+      end_time: 1444924800000,
+      rebuy: 0,
+      expect_earning: 0,
+      assetType: 'timeDeposit',
+      objId: '561ca71fea874bf61a7e8350',
+      type: 2,
+      portfolio_id: '55c31e936f227ed922c508aa',
+      rate: 0.09,
+      discountRate: 0.03 };
+
+    var SpecCalTime = asset.start_time + ms( portfolioInfo.term+'d');
+    var principalAsset = af.assemble(portfolioInfo, asset);
+    var earning = af.cal(principalAsset, SpecCalTime);
+    earning.should.be.above(0);
+    done();
+  })
 });
