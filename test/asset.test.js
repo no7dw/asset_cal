@@ -4,6 +4,20 @@ var date_util = require('../util/date_util');
 var ms = require('ms');
 
 describe('asset calucaltor', function(){
+
+	it('verify spec time with eror', function(done){
+		var asset = new Asset('');
+		var assetObj = {
+			"num":10000,
+			"start_time" : 1437667200000,
+			"end_time" : 1438272000000
+		};
+		assetObj.end_time = new Date().getTime() + ms('3d');// time ok
+		var result = asset.cal(assetObj);
+		result.should.be.equal(assetObj.rate*assetObj.num/365);
+		done();
+	});
+
 	it('verify spec time', function(done){
 		var asset = new Asset('');
 		var assetObj = {
