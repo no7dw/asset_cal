@@ -28,7 +28,24 @@ describe('timeDesposit calucaltor', function() {
     rate:0.1,
     discountRate:0.03
   };
+  it('verify assetZero  at right end time', function(done){
+    var assetZero = {
+      amount:0.00111,
+      num:0,
+      start_time: new Date('2015/7/12').getTime(),//1436630400000
+      end_time:new Date('2015/8/11').getTime(),//1439222400000,
+      blockPeriod:15,
+      rate:0.1,
+      discountRate:0.03
+    };
 
+    var todayZeroTime = new Date('2015/8/11').getTime();
+    var timeDeposit = new TimeDeposit();
+    var assetValue = timeDeposit.cal(assetZero, todayZeroTime);
+    var periodDay =  (asset.end_time - asset.start_time)/ms('1d');
+    assetValue.should.be.equal(0);
+    done();
+  });
 
   it('verify  at right end time', function(done){
 
