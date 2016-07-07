@@ -1,23 +1,23 @@
+'use strict'
+
 /**
  * Created by dengwei on 11/10/15.
  */
-var AssetFactory = require('../lib/assetFactory');
-var af = new AssetFactory();
-
-var should = require('should');
-var ms = require('ms');
-
-var date_util = require('../util/date_util');
+const AssetFactory = require('../lib/assetFactory');
+const af = new AssetFactory();
+const should = require('should');
+const ms = require('ms');
+const date_util = require('../util/date_util');
 
 describe('asset factory calucaltor', function() {
 
-  var Const = {
+  let Const = {
     "PRODUCT": {
       "KOALAID": "549922452238c54e98b750bc",
       "TIME3MID": "55c31e936f227ed922c508aa"
     }
   };
-  var demandDepositObj = {
+  let demandDepositObj = {
     "rate": 0.08,
     "id": 0,
     "amount": 1000,
@@ -25,7 +25,7 @@ describe('asset factory calucaltor', function() {
     "portfolio_id": Const.PRODUCT.KOALAID,
     "assetType": "demandDeposit"
   };
-  var timeDepositObj = {
+  let timeDepositObj = {
     "id": 0,
     "amount": 1000,
     "num": 1000,
@@ -37,23 +37,27 @@ describe('asset factory calucaltor', function() {
     "portfolio_id": Const.PRODUCT.TIME3MID,
     "assetType": "timeDeposit"
   };
+
   it('with normal demandDeposit obj', function (done) {
-    var earningValue = af.cal(demandDepositObj);
+    let earningValue = af.cal(demandDepositObj);
     earningValue.should.be.equal(demandDepositObj.amount*demandDepositObj.rate/365);
     done();
   });
+
   it('with normal timeDeposit obj', function (done) {
-    var earningValue = af.cal(timeDepositObj);
+    let earningValue = af.cal(timeDepositObj);
     earningValue.should.be.equal(timeDepositObj.amount*timeDepositObj.rate/365*90);
     done();
   });
+
   it('with cal 0 ', function (done) {
-    var earningValue = af.cal(0);
+    let earningValue = af.cal(0);
     earningValue.should.be.equal(0);
     done();
   });
+
   it('定期预期收益', function(done){
-    var portfolioInfo = { _id: "55c31e936f227ed922c508aa",
+    let portfolioInfo = { _id: "55c31e936f227ed922c508aa",
       quota: 80000,
       name: '三月定期',
       term: 3,
@@ -64,7 +68,7 @@ describe('asset factory calucaltor', function() {
       discountRate: 0.03,
       product_id: "55c31e936f227ed922c508aa",
       id: '55c31e936f227ed922c508aa' };
-    var asset =  { amount: 100,
+    let asset =  { amount: 100,
       num: 100,
       product_id: '55c31e936f227ed922c508aa',
       asset_id: '561ca71fea874bf61a7e8350',
@@ -79,10 +83,11 @@ describe('asset factory calucaltor', function() {
       rate: 0.09,
       discountRate: 0.03 };
 
-    var SpecCalTime = asset.start_time + ms( portfolioInfo.term+'d');
-    var principalAsset = af.assemble(portfolioInfo, asset);
-    var earning = af.cal(principalAsset, SpecCalTime);
+    let SpecCalTime = asset.start_time + ms( portfolioInfo.term+'d');
+    let principalAsset = af.assemble(portfolioInfo, asset);
+    let earning = af.cal(principalAsset, SpecCalTime);
     earning.should.be.above(0);
     done();
   })
+
 });
