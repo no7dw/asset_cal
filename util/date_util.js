@@ -1,5 +1,6 @@
+'use strict'
 
-var moment = require('moment');
+const moment = require('moment');
 
 module.exports = {
   /**
@@ -11,7 +12,7 @@ module.exports = {
   getDate: function (currentTime, addDay, isSetZero) {
     if (currentTime == undefined)
       currentTime = new Date();
-    var today = new Date();
+    let today = new Date();
     if (addDay != undefined) {
       today.setFullYear(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate() + addDay);
     } else {
@@ -21,8 +22,8 @@ module.exports = {
     return today.getTime();
   },
   formatTime: function (currentTime, formatStr) {
-    var time = currentTime || new Date();
-    var format = formatStr || '';
+    let time = currentTime || new Date();
+    let format = formatStr || '';
     return moment(time).format(format);
   },
   /**
@@ -33,9 +34,9 @@ module.exports = {
    * @returns {*}
    */
   diff: function (start_time, end_time, type) {
-    var start = moment(start_time);
-    var end = moment(end_time || new Date());
-    var day = end.diff(start, type||'days');
+    let start = moment(start_time);
+    let end = moment(end_time || new Date());
+    let day = end.diff(start, type||'days');
     return day;
   },
   /**
