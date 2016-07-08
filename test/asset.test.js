@@ -7,7 +7,7 @@ const ms = require('ms');
 
 describe('asset calucaltor', function(){
 	it('verify spec time', function(done){
-		let asset = new Asset('');
+		let asset = new Asset();
 		let assetObj = {
 			"rate":0.08,
 			"num":10000,
