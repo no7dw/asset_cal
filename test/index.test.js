@@ -1,15 +1,16 @@
+'use strict'
+
 /**
  * Created by dengwei on 17/9/15.
  */
-var should = require('should');
+const should = require('should');
+const AssetFactory = require('../lib/assetFactory');
+const af = new AssetFactory();
+const date_util = require('../util/date_util');
+const Const = require('../data/const');
+const ms = require('ms')
 
-var AssetFactory = require('../lib/assetFactory');
-var af = new AssetFactory();
-var date_util = require('../util/date_util');
-
-var Const = require('../data/const');
-
-var calculateSingleUserAsset = function (portfolioInfo, asset) {
+let calculateSingleUserAsset = function (portfolioInfo, asset) {
     var principalAsset = af.assemble(portfolioInfo, asset);
     return af.cal(principalAsset);
 }
@@ -42,7 +43,7 @@ var demandDepositSample = {
     "amount" : 500,
     "asset_id" : "561b8f2caf0eef937be5fefe",
     "start_time" : 1444579200000.0000000000000000,
-    "end_time" : 1445184000000.0000000000000000,
+    "end_time" : date_util.getDate() + ms('1d'),
     //"time" : ISODate("2015-10-12T10:45:00.774Z")
   };
 var funds = [ { quota: 10000,
