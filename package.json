@@ -18,10 +18,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "mathjs": "^1.7.0",
+    "mathjs": "^~4.0.1",
     "moment": "~2.19.3",
-    "ms": "^0.7.1",
-    "underscore": "^1.8.3"
+    "ms": "~2.1.1",
+    "underscore": "~1.8.3"
   },
   "devDependencies": {
     "mocha": "*",
