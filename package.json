@@ -19,7 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "mathjs": "^1.7.0",
-    "moment": "2.10.3",
+    "moment": "~2.19.3",
     "ms": "^0.7.1",
     "underscore": "^1.8.3"
   },
